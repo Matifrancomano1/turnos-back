@@ -1,0 +1,309 @@
+{
+	"info": {
+		"name": "SaaS Turnos - Todos los Métodos",
+		"description": "Colección completa con todos los controladores y sus métodos (GET, POST, PUT, PATCH, DELETE).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Auth",
+			"item": [
+				{
+					"name": "POST Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": { "exec": ["var j=pm.response.json();if(j.data&&j.data.accessToken)pm.collectionVariables.set(\"token\",j.data.accessToken);"], "type": "text/javascript" }
+						}
+					],
+					"request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Admin\",\n  \"email\": \"admin@tuerca.com\",\n  \"password\": \"Admin123!\",\n  \"telefono\": \"123456\"\n}" }, "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth", "register"] } }
+				},
+				{
+					"name": "POST Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": { "exec": ["var j=pm.response.json();if(j.data&&j.data.accessToken)pm.collectionVariables.set(\"token\",j.data.accessToken);"], "type": "text/javascript" }
+						}
+					],
+					"request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"email\": \"admin@tuerca.com\",\n  \"password\": \"Admin123!\"\n}" }, "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] } }
+				},
+				{
+					"name": "POST Refresh",
+					"request": { "method": "POST", "header": [], "url": { "raw": "{{baseUrl}}/auth/refresh?token=AQUI_TU_REFRESH", "host": ["{{baseUrl}}"], "path": ["auth", "refresh"], "query": [{"key":"token","value":"AQUI_TU_REFRESH"}] } }
+				},
+				{
+					"name": "POST Logout",
+					"request": { "method": "POST", "header": [], "url": { "raw": "{{baseUrl}}/auth/logout?token=AQUI_TU_REFRESH", "host": ["{{baseUrl}}"], "path": ["auth", "logout"], "query": [{"key":"token","value":"AQUI_TU_REFRESH"}] } }
+				}
+			]
+		},
+		{
+			"name": "2. Empresas",
+			"item": [
+				{
+					"name": "GET Listar Empresas",
+					"request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/empresas", "host": ["{{baseUrl}}"], "path": ["empresas"] } }
+				},
+				{
+					"name": "POST Crear Empresa",
+					"event": [
+						{
+							"listen": "test",
+							"script": { "exec": ["var j=pm.response.json();if(j.data&&j.data.id)pm.collectionVariables.set(\"empresa_id\",j.data.id);"], "type": "text/javascript" }
+						}
+					],
+					"request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Tuerca SRL\",\n  \"razonSocial\": \"Tuerca\",\n  \"cuit\": \"30-111-9\",\n  \"adminEmail\": \"admin2@tuerca.com\",\n  \"adminNombre\": \"Admin2\",\n  \"adminPassword\": \"Admin123!\"\n}" }, "url": { "raw": "{{baseUrl}}/empresas", "host": ["{{baseUrl}}"], "path": ["empresas"] } }
+				},
+				{
+					"name": "GET Obtener Empresa",
+					"request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}"] } }
+				},
+				{
+					"name": "PUT Actualizar Empresa",
+					"request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Tuerca Actualizada\",\n  \"telefono\": \"000\"\n}" }, "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}"] } }
+				},
+				{
+					"name": "PUT Act. Config Horarios",
+					"request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"horaApertura\": \"09:00:00\",\n  \"horaCierre\": \"18:00:00\",\n  \"duracionSlotMinutos\": 30,\n  \"sabadoHabilitado\": true,\n  \"domingoHabilitado\": false\n}" }, "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/config", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "config"] } }
+				}
+			]
+		},
+		{
+			"name": "3. Usuarios",
+			"item": [
+				{
+					"name": "GET Mi Perfil (Me)",
+					"request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/usuarios/me", "host": ["{{baseUrl}}"], "path": ["usuarios", "me"] } }
+				},
+				{
+					"name": "GET Listar por Empresa",
+					"request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/usuarios", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "usuarios"] } }
+				},
+				{
+					"name": "POST Crear Operador",
+					"request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Operador 1\",\n  \"email\": \"op1@tuerca.com\",\n  \"password\": \"Pass1234!\",\n  \"rol\": \"OPERADOR\"\n}" }, "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/usuarios", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "usuarios"] } }
+				},
+				{
+					"name": "PUT Actualizar Mi Perfil",
+					"request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Nuevo Nombre\",\n  \"telefono\": \"555-555\"\n}" }, "url": { "raw": "{{baseUrl}}/usuarios/me", "host": ["{{baseUrl}}"], "path": ["usuarios", "me"] } }
+				},
+				{
+					"name": "PATCH Cambiar Rol Usuario",
+					"request": { "method": "PATCH", "header": [], "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/usuarios/ID_USAURIO_AQUI/rol?nuevoRol=ADMIN", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "usuarios", "ID_USAURIO_AQUI", "rol"], "query": [{"key":"nuevoRol","value":"ADMIN"}] } }
+				}
+			]
+		},
+		{
+			"name": "4. Servicios",
+			"item": [
+				{
+					"name": "GET Listar Servicios",
+					"request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/servicios?soloActivos=false", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "servicios"], "query": [{"key":"soloActivos","value":"false"}] } }
+				},
+				{
+					"name": "POST Crear Servicio",
+					"event": [
+						{
+							"listen": "test",
+							"script": { "exec": ["var j=pm.response.json();if(j.data&&j.data.id)pm.collectionVariables.set(\"servicio_id\",j.data.id);"], "type": "text/javascript" }
+						}
+					],
+					"request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Reparación Test\",\n  \"descripcion\": \"Desc\",\n  \"duracionMinutos\": 60,\n  \"precioBase\": 5000\n}" }, "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/servicios", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "servicios"] } }
+				},
+				{
+					"name": "GET Obtener Servicio",
+					"request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/servicios/{{servicio_id}}", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "servicios", "{{servicio_id}}"] } }
+				},
+				{
+					"name": "PUT Actualizar Servicio",
+					"request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Reparación Act\",\n  \"duracionMinutos\": 120,\n  \"precioBase\": 6000\n}" }, "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/servicios/{{servicio_id}}", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "servicios", "{{servicio_id}}"] } }
+				},
+				{
+					"name": "PATCH Alternar Estado Servicio",
+					"request": { "method": "PATCH", "header": [], "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/servicios/{{servicio_id}}/estado?activo=false", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "servicios", "{{servicio_id}}", "estado"], "query": [{"key":"activo","value":"false"}] } }
+				}
+			]
+		},
+		{
+			"name": "5. Turnos",
+			"item": [
+				{
+					"name": "GET Listar (Operador/Admin)",
+					"request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/turnos", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "turnos"] } }
+				},
+				{
+					"name": "GET Mis Turnos (Cliente)",
+					"request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/clientes/me/turnos", "host": ["{{baseUrl}}"], "path": ["clientes", "me", "turnos"] } }
+				},
+				{
+					"name": "POST Solicitar Turno",
+					"event": [
+						{
+							"listen": "test",
+							"script": { "exec": ["var j=pm.response.json();if(j.data&&j.data.id)pm.collectionVariables.set(\"turno_id\",j.data.id);"], "type": "text/javascript" }
+						}
+					],
+					"request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"servicioId\": \"{{servicio_id}}\",\n  \"fechaSolicitada\": \"2025-01-01\",\n  \"horaSolicitada\": \"10:00:00\",\n  \"notasCliente\": \"Hacer rápido\"\n}" }, "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/turnos", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "turnos"] } }
+				},
+				{
+					"name": "GET Detalle de Turno",
+					"request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/turnos/{{turno_id}}", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "turnos", "{{turno_id}}"] } }
+				},
+				{
+					"name": "PATCH Cambiar Estado",
+					"request": { "method": "PATCH", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"nuevoEstado\": \"PROGRAMADO\",\n  \"observaciones\": \"OK\"\n}" }, "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/turnos/{{turno_id}}/estado", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "turnos", "{{turno_id}}", "estado"] } }
+				},
+				{
+					"name": "PUT Reprogramar",
+					"request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"nuevaFecha\": \"2025-01-02\",\n  \"nuevaHora\": \"11:00:00\"\n}" }, "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/turnos/{{turno_id}}/reprogramar", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "turnos", "{{turno_id}}", "reprogramar"] } }
+				},
+				{
+					"name": "POST Registrar Seña",
+					"request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"monto\": 1000,\n  \"metodoPago\": \"TRANSFERENCIA\",\n  \"referencia\": \"COMP-123\"\n}" }, "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/turnos/{{turno_id}}/senia", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "turnos", "{{turno_id}}", "senia"] } }
+				},
+				{
+					"name": "POST Finalizar Turno",
+					"request": { "method": "POST", "header": [], "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/turnos/{{turno_id}}/finalizar", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "turnos", "{{turno_id}}", "finalizar"] } }
+				},
+				{
+					"name": "DELETE Cancelar Turno",
+					"request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/turnos/{{turno_id}}?motivo=No puedo asistir", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "turnos", "{{turno_id}}"], "query": [{"key":"motivo","value":"No puedo asistir"}] } }
+				}
+			]
+		},
+		{
+			"name": "6. Cotizaciones",
+			"item": [
+				{
+					"name": "POST Crear Cotizacion",
+					"request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"montoCalculado\": 50000,\n  \"montoSenia\": 10000,\n  \"validezHasta\": \"2024-12-31\",\n  \"fechaPropuesta\": \"2024-05-15\",\n  \"horaPropuesta\": \"09:00:00\"\n}" }, "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/turnos/{{turno_id}}/cotizacion", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "turnos", "{{turno_id}}", "cotizacion"] } }
+				},
+				{
+					"name": "GET Obtener",
+					"request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/turnos/{{turno_id}}/cotizacion", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "turnos", "{{turno_id}}", "cotizacion"] } }
+				},
+				{
+					"name": "PUT Actualizar",
+					"request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"montoCalculado\": 55000,\n  \"montoSenia\": null,\n  \"validezHasta\": null\n}" }, "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/turnos/{{turno_id}}/cotizacion", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "turnos", "{{turno_id}}", "cotizacion"] } }
+				},
+				{
+					"name": "POST Aceptar (Cliente)",
+					"request": { "method": "POST", "header": [], "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/turnos/{{turno_id}}/cotizacion/aceptar", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "turnos", "{{turno_id}}", "cotizacion", "aceptar"] } }
+				},
+				{
+					"name": "POST Rechazar (Cliente)",
+					"request": { "method": "POST", "header": [], "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/turnos/{{turno_id}}/cotizacion/rechazar", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "turnos", "{{turno_id}}", "cotizacion", "rechazar"] } }
+				}
+			]
+		},
+		{
+			"name": "7. Agenda",
+			"item": [
+				{
+					"name": "GET Disponibilidad de Horarios",
+					"request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/agenda/disponibilidad?fecha=2024-05-15", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "agenda", "disponibilidad"], "query": [{"key":"fecha","value":"2024-05-15"}] } }
+				},
+				{
+					"name": "GET Calendario General",
+					"request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/agenda/calendario?fecha=2024-05-15&vista=DIA", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "agenda", "calendario"], "query": [{"key":"fecha","value":"2024-05-15"},{"key":"vista","value":"DIA"}] } }
+				},
+				{
+					"name": "GET Listar Bloqueos",
+					"request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/agenda/bloqueos?desde=2024-05-01&hasta=2024-05-31", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "agenda", "bloqueos"], "query": [{"key":"desde","value":"2024-05-01"},{"key":"hasta","value":"2024-05-31"}] } }
+				},
+				{
+					"name": "POST Crear Bloqueo",
+					"request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"fechaDesde\": \"2024-05-20\",\n  \"fechaHasta\": \"2024-05-20\",\n  \"horaDesde\": \"13:00:00\",\n  \"horaHasta\": \"15:00:00\",\n  \"motivo\": \"Almuerzo personal\"\n}" }, "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/agenda/bloqueos", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "agenda", "bloqueos"] } }
+				},
+				{
+					"name": "DELETE Eliminar Bloqueo",
+					"request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/agenda/bloqueos/ID_DEL_BLOQUEO", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "agenda", "bloqueos", "ID_DEL_BLOQUEO"] } }
+				}
+			]
+		},
+		{
+			"name": "8. Notificaciones",
+			"item": [
+				{
+					"name": "GET Mis Notificaciones",
+					"request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/usuarios/me/notificaciones", "host": ["{{baseUrl}}"], "path": ["usuarios", "me", "notificaciones"] } }
+				},
+				{
+					"name": "PATCH Marcar Notificación Leída",
+					"request": { "method": "PATCH", "header": [], "url": { "raw": "{{baseUrl}}/usuarios/me/notificaciones/ID_NOTIFICACION/leer", "host": ["{{baseUrl}}"], "path": ["usuarios", "me", "notificaciones", "ID_NOTIFICACION", "leer"] } }
+				},
+				{
+					"name": "GET Config Whatsapp/Email (Admin)",
+					"request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/notificaciones/config", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "notificaciones", "config"] } }
+				},
+				{
+					"name": "PUT Actualizar Config",
+					"request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"whatsappEnabled\": true,\n  \"emailEnabled\": true,\n  \"whatsappApiToken\": \"token123\",\n  \"whatsappPhoneId\": \"555\",\n  \"gmailClientId\": \"client123\",\n  \"gmailClientSecret\": \"secret123\"\n}" }, "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/notificaciones/config", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "notificaciones", "config"] } }
+				},
+				{
+					"name": "POST Enviar Test",
+					"request": { "method": "POST", "header": [], "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/notificaciones/test?canal=WHATSAPP", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "notificaciones", "test"], "query": [{"key":"canal","value":"WHATSAPP"}] } }
+				}
+			]
+		},
+		{
+			"name": "9. Reportes & Estadísticas",
+			"item": [
+				{
+					"name": "GET Dashboard",
+					"request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/reportes/dashboard?desde=2024-01-01&hasta=2024-12-31", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "reportes", "dashboard"], "query": [{"key":"desde","value":"2024-01-01"},{"key":"hasta","value":"2024-12-31"}] } }
+				},
+				{
+					"name": "GET Top Servicios",
+					"request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/reportes/servicios?desde=2024-01-01&hasta=2024-12-31", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "reportes", "servicios"], "query": [{"key":"desde","value":"2024-01-01"},{"key":"hasta","value":"2024-12-31"}] } }
+				},
+				{
+					"name": "GET Historial Turnos Paginado",
+					"request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/reportes/turnos?desde=2024-01-01&hasta=2024-12-31&page=0&size=20", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "reportes", "turnos"], "query": [{"key":"desde","value":"2024-01-01"},{"key":"hasta","value":"2024-12-31"},{"key":"page","value":"0"},{"key":"size","value":"20"}] } }
+				},
+				{
+					"name": "GET Descargar Excel",
+					"request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/reportes/export?desde=2024-01-01&hasta=2024-12-31", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "reportes", "export"], "query": [{"key":"desde","value":"2024-01-01"},{"key":"hasta","value":"2024-12-31"}] } }
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "empresa_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "servicio_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "turno_id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

@@ -1,0 +1,4 @@
+com\turnos\saas\security\JwtUtilTest.class
+com\turnos\saas\service\TurnoServiceTest.class
+com\turnos\saas\model\enums\TurnoEstadoTest.class
+com\turnos\saas\controller\AuthControllerIT.class
