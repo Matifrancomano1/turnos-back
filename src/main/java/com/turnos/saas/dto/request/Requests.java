@@ -65,20 +65,44 @@ public final class Requests {
             @NotBlank @Size(max = 150) @NoHtml String nombre,
             @NotBlank @Email @Size(max = 150) String emailContacto,
             @Size(max = 255) @NoHtml String direccion,
-            @Size(max = 30) String telefono
+            @Size(max = 30) String telefono,
+            /**
+             * URL slug único para la empresa. Solo minúsculas, números y guiones.
+             * Ejemplo: "mi-negocio-2025"
+             */
+            @NotBlank
+            @Size(min = 3, max = 100, message = "El slug debe tener entre 3 y 100 caracteres")
+            @Pattern(
+                regexp = "^[a-z0-9-]+$",
+                message = "El slug solo puede contener letras minúsculas (a-z), números y guiones (-)"
+            )
+            String slug
     ) {}
 
     public record UpdateEmpresaRequest(
             @NotBlank @Size(max = 150) @NoHtml String nombre,
             @NotBlank @Email @Size(max = 150) String emailContacto,
             @Size(max = 255) @NoHtml String direccion,
-            @Size(max = 30) String telefono
+            @Size(max = 30) String telefono,
+            @NotBlank
+            @Size(min = 3, max = 100, message = "El slug debe tener entre 3 y 100 caracteres")
+            @Pattern(
+                regexp = "^[a-z0-9-]+$",
+                message = "El slug solo puede contener letras minúsculas (a-z), números y guiones (-)"
+            )
+            String slug
     ) {}
 
     public record UpdateEmpresaConfigRequest(
             @NotNull LocalTime horaApertura,
             @NotNull LocalTime horaCierre,
-            @NotNull @Min(5) @Max(480) Integer duracionSlotMinutos,
+            /**
+             * Duración de cada slot en minutos. Valores soportados: 15, 30, 45, 60.
+             * La validación de múltiplo se aplica en la capa de servicio.
+             */
+            @NotNull @Min(value = 15, message = "La duración mínima de slot es 15 minutos")
+            @Max(value = 480, message = "La duración máxima de slot es 480 minutos")
+            Integer duracionSlotMinutos,
             @NotNull Boolean sabadoHabilitado,
             @NotNull Boolean domingoHabilitado
     ) {}

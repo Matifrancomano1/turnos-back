@@ -9,17 +9,20 @@ spring:
     name: saas-turnos
 
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5433/turnos_db}
-    username: ${DB_USER:postgres}
-    password: ${DB_PASSWORD:changeme}
+    url: ${DB_URL:jdbc:postgresql://ep-muddy-violet-aqxe03pa-pooler.c-8.us-east-1.aws.neon.tech/neondb?sslmode=require}
+    username: ${DB_USER:neondb_owner}
+    password: ${DB_PASSWORD:npg_WaC2q4ZGNTPQ}
     driver-class-name: org.postgresql.Driver
     hikari:
-      maximum-pool-size: 10
-      minimum-idle: 2
+      maximum-pool-size: 5        # NeonDB free tier limita conexiones simultáneas
+      minimum-idle: 1
       connection-timeout: 30000
       idle-timeout: 600000
       max-lifetime: 1800000
-      pool-name: TurnosHikariPool
+      pool-name: TurnosNeonHikariPool
+      # SSL requerido por NeonDB
+      data-source-properties:
+        sslmode: require
 
   jpa:
     hibernate:
@@ -35,8 +38,13 @@ spring:
   flyway:
     enabled: true
     baseline-on-migrate: true
+    # Si el schema fue creado manualmente con neondb_schema.sql,
+    # usar baseline-version=2 para que Flyway no re-ejecute V1.
+    # Si la BD está VACÍA, dejar en 0 (Flyway aplicará V1 y V2).
+    baseline-version: 2
     locations: classpath:db/migration
     validate-on-migrate: true
+    out-of-order: false
 
   mail:
     host: smtp.gmail.com

@@ -33,6 +33,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/v1/auth/**",
+                                "/api/v1/empresas/slug/**",  // lookup público por slug
                                 "/actuator/health",
                                 "/actuator/info"
                         ).permitAll()

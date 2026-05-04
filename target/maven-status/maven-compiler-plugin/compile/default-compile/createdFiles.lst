@@ -67,6 +67,7 @@ com\turnos\saas\service\ReporteService.class
 com\turnos\saas\service\AuthService.class
 com\turnos\saas\repository\EmpresaRepository.class
 com\turnos\saas\dto\response\Responses$ServicioResponse.class
+com\turnos\saas\exception\SlugDuplicadoException.class
 com\turnos\saas\model\entity\RefreshToken.class
 com\turnos\saas\dto\response\Responses$DisponibilidadResponse.class
 com\turnos\saas\exception\TenantAccessException.class

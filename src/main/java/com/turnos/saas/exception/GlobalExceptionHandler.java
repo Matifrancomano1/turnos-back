@@ -43,6 +43,12 @@ public class GlobalExceptionHandler {
                 .body(ErrorResponse.of("FORBIDDEN", ex.getMessage()));
     }
 
+    @ExceptionHandler(SlugDuplicadoException.class)
+    public ResponseEntity<ErrorResponse> handleSlugDuplicado(SlugDuplicadoException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(ErrorResponse.of("CONFLICT", ex.getMessage()));
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidation(MethodArgumentNotValidException ex) {
         Map<String, String> fields = ex.getBindingResult().getFieldErrors().stream()

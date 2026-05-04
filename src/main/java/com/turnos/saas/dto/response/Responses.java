@@ -79,6 +79,7 @@ public final class Responses {
     public record EmpresaResponse(
             UUID id,
             String nombre,
+            String slug,
             String emailContacto,
             String direccion,
             String telefono,

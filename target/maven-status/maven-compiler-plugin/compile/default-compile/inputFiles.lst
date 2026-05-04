@@ -17,6 +17,7 @@ C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\except
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\exception\GlobalExceptionHandler.java
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\exception\InvalidStateTransitionException.java
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\exception\ResourceNotFoundException.java
+C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\exception\SlugDuplicadoException.java
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\exception\TenantAccessException.java
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\filter\JwtAuthFilter.java
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\filter\RateLimitFilter.java

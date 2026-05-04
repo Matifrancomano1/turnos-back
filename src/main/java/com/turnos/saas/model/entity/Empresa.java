@@ -35,6 +35,14 @@ public class Empresa {
     @Column(length = 30)
     private String telefono;
 
+    /**
+     * Identificador único legible para la URL pública de la empresa.
+     * Ejemplo: "mi-taller-mecanico" → /turnos/mi-taller-mecanico
+     * Solo admite letras minúsculas, números y guiones: ^[a-z0-9-]+$
+     */
+    @Column(unique = true, nullable = false, length = 100)
+    private String slug;
+
     @Column(name = "hora_apertura", nullable = false)
     private LocalTime horaApertura;
 

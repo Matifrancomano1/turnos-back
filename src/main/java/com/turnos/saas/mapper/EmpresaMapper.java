@@ -14,6 +14,7 @@ public interface EmpresaMapper {
 
     @Mapping(target = "config", expression = "java(new EmpresaConfigResponse(empresa.getHoraApertura(), empresa.getHoraCierre(), empresa.getDuracionSlotMinutos(), empresa.getSabadoHabilitado(), empresa.getDomingoHabilitado()))")
     @Mapping(target = "creadoEn", source = "createdAt")
+    @Mapping(target = "slug",    source = "slug")  // campo directo; explícito por documentación
     EmpresaResponse toResponse(Empresa empresa);
 
     List<EmpresaResponse> toResponseList(List<Empresa> empresas);

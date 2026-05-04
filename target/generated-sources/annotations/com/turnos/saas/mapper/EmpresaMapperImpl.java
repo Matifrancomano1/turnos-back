@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-04-27T15:10:41-0300",
+    date = "2026-05-04T11:22:55-0300",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.8 (Eclipse Adoptium)"
 )
 @Component
@@ -25,6 +25,7 @@ public class EmpresaMapperImpl implements EmpresaMapper {
         }
 
         OffsetDateTime creadoEn = null;
+        String slug = null;
         UUID id = null;
         String nombre = null;
         String emailContacto = null;
@@ -33,6 +34,7 @@ public class EmpresaMapperImpl implements EmpresaMapper {
         Boolean activa = null;
 
         creadoEn = empresa.getCreatedAt();
+        slug = empresa.getSlug();
         id = empresa.getId();
         nombre = empresa.getNombre();
         emailContacto = empresa.getEmailContacto();
@@ -42,7 +44,7 @@ public class EmpresaMapperImpl implements EmpresaMapper {
 
         Responses.EmpresaConfigResponse config = new EmpresaConfigResponse(empresa.getHoraApertura(), empresa.getHoraCierre(), empresa.getDuracionSlotMinutos(), empresa.getSabadoHabilitado(), empresa.getDomingoHabilitado());
 
-        Responses.EmpresaResponse empresaResponse = new Responses.EmpresaResponse( id, nombre, emailContacto, direccion, telefono, config, activa, creadoEn );
+        Responses.EmpresaResponse empresaResponse = new Responses.EmpresaResponse( id, nombre, slug, emailContacto, direccion, telefono, config, activa, creadoEn );
 
         return empresaResponse;
     }
