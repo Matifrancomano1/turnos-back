@@ -35,19 +35,24 @@ public class DataSeeder implements CommandLineRunner {
     }
 
     private void seedUsuario(String email, String nombre, String rawPassword, Rol rol) {
-        if (usuarioRepository.existsByEmail(email)) {
-            log.debug("[DataSeeder] Usuario '{}' ya existe, se omite la creación.", email);
-            return;
-        }
-        Usuario u = Usuario.builder()
-                .nombre(nombre)
-                .email(email)
-                .passwordHash(passwordEncoder.encode(rawPassword))
-                .rol(rol)
-                .activo(true)
-                .build();
-        usuarioRepository.save(u);
-        log.info("[DataSeeder] Usuario '{}' creado con rol {}.", email, rol);
+        usuarioRepository.findByEmail(email).ifPresentOrElse(
+            u -> {
+                u.setPasswordHash(passwordEncoder.encode(rawPassword));
+                usuarioRepository.save(u);
+                log.debug("[DataSeeder] Usuario '{}' ya existe, contraseña actualizada al valor por defecto.", email);
+            },
+            () -> {
+                Usuario u = Usuario.builder()
+                        .nombre(nombre)
+                        .email(email)
+                        .passwordHash(passwordEncoder.encode(rawPassword))
+                        .rol(rol)
+                        .activo(true)
+                        .build();
+                usuarioRepository.save(u);
+                log.info("[DataSeeder] Usuario '{}' creado con rol {}.", email, rol);
+            }
+        );
     }
 
     private void printCredenciales() {

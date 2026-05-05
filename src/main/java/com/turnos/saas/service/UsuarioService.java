@@ -37,7 +37,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    public UsuarioResponse crearOperador(UUID empresaId, CreateUsuarioRequest request) {
+    public UsuarioResponse crearUsuario(UUID empresaId, CreateUsuarioRequest request) {
         Empresa empresa = empresaService.findActiveOrThrow(empresaId);
 
         if (usuarioRepository.existsByEmail(request.email())) {
@@ -50,12 +50,19 @@ public class UsuarioService {
                 .email(request.email())
                 .passwordHash(passwordEncoder.encode(request.password()))
                 .telefono(request.telefono())
-                .rol(Rol.OPERADOR)
+                .rol(Rol.OPERADOR) // por defecto OPERADOR; cambiar con PATCH /usuarios/{id}/rol
+                .activo(true)
                 .build();
 
         usuario = usuarioRepository.save(usuario);
-        log.info("Operador creado: id={}, empresaId={}", usuario.getId(), empresaId);
+        log.info("Usuario creado: id={}, empresaId={}", usuario.getId(), empresaId);
         return usuarioMapper.toResponse(usuario);
+    }
+
+    /** Mantener compatibilidad interna si algo lo llama todavía */
+    @Transactional
+    public UsuarioResponse crearOperador(UUID empresaId, CreateUsuarioRequest request) {
+        return crearUsuario(empresaId, request);
     }
 
     @Transactional(readOnly = true)
@@ -89,12 +96,18 @@ public class UsuarioService {
     }
 
     @Transactional
-    public void deshabilitar(UUID userId) {
-        Usuario usuario = usuarioRepository.findByIdAndActivoTrue(userId)
+    public UsuarioResponse toggleActivo(UUID userId, boolean activo) {
+        Usuario usuario = usuarioRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario", userId));
-        usuario.setActivo(false);
-        usuarioRepository.save(usuario);
-        log.info("Usuario deshabilitado (soft delete): id={}", userId);
+        usuario.setActivo(activo);
+        usuario = usuarioRepository.save(usuario);
+        log.info("Usuario {}: id={}", activo ? "activado" : "deshabilitado", userId);
+        return usuarioMapper.toResponse(usuario);
+    }
+
+    @Transactional
+    public void deshabilitar(UUID userId) {
+        toggleActivo(userId, false);
     }
 
     @Transactional(readOnly = true)

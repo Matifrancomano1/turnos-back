@@ -16,6 +16,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
 
     boolean existsByEmail(String email);
 
+    boolean existsByEmailAndIdNot(String email, UUID id);
+
+    Page<Usuario> findByEmpresaId(UUID empresaId, Pageable pageable);
+
     Page<Usuario> findByEmpresaIdAndActivoTrue(UUID empresaId, Pageable pageable);
 
     Optional<Usuario> findByIdAndActivoTrue(UUID id);
