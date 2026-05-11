@@ -37,10 +37,12 @@ com\turnos\saas\controller\EmpresaController.class
 com\turnos\saas\service\UsuarioService.class
 com\turnos\saas\dto\response\Responses$EmpresaConfigResponse.class
 com\turnos\saas\exception\GlobalExceptionHandler.class
+com\turnos\saas\dto\request\Requests$CreateTenantAdminRequest.class
 com\turnos\saas\repository\NotifConfigRepository.class
 com\turnos\saas\dto\request\Requests$ForgotPasswordRequest.class
 com\turnos\saas\mapper\CotizacionMapperImpl.class
 com\turnos\saas\model\entity\Cotizacion.class
+com\turnos\saas\controller\SuperAdminController.class
 com\turnos\saas\dto\response\Responses$DashboardResponse.class
 com\turnos\saas\model\entity\Senia$SeniaBuilder.class
 com\turnos\saas\model\entity\Servicio$ServicioBuilder.class
@@ -49,6 +51,7 @@ com\turnos\saas\controller\AgendaController.class
 com\turnos\saas\dto\request\Requests$RefreshTokenRequest.class
 com\turnos\saas\dto\response\Responses$RefreshResponse.class
 com\turnos\saas\dto\request\Requests.class
+com\turnos\saas\service\SuperAdminService.class
 com\turnos\saas\dto\response\Responses$SeniaInfo.class
 com\turnos\saas\dto\response\Responses$ServicioInfo.class
 com\turnos\saas\repository\TurnoRepository.class
@@ -58,11 +61,14 @@ com\turnos\saas\dto\response\Responses$NotifConfigResponse.class
 com\turnos\saas\dto\response\Responses$CotizacionResponse.class
 com\turnos\saas\repository\ServicioRepository.class
 com\turnos\saas\dto\response\Responses$EmpresaResponse.class
+com\turnos\saas\dto\response\Responses$SuperAdminStatsResponse.class
+com\turnos\saas\dto\response\Responses$SuperAdminEmpresaResponse.class
 com\turnos\saas\dto\response\Responses$UsuarioResponse.class
 com\turnos\saas\dto\request\Requests$UpdateEmpresaRequest.class
 com\turnos\saas\model\entity\Turno$TurnoBuilder.class
 com\turnos\saas\model\entity\Notificacion.class
 com\turnos\saas\model\entity\BloqueoAgenda$BloqueoAgendaBuilder.class
+com\turnos\saas\dto\response\Responses$ImpersonationResponse.class
 com\turnos\saas\service\ReporteService.class
 com\turnos\saas\service\AuthService.class
 com\turnos\saas\repository\EmpresaRepository.class

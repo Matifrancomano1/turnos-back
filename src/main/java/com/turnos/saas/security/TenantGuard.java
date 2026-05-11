@@ -20,6 +20,9 @@ public class TenantGuard {
         UUID tokenEmpresaId = jwtUtil.extractEmpresaId(claims);
         Rol rol = jwtUtil.extractRol(claims);
 
+        // SuperAdmin tiene acceso global sin restricción de tenant
+        if (rol == Rol.SUPER_ADMIN) return;
+
         if (rol == Rol.ADMIN && tokenEmpresaId == null) {
             return;
         }

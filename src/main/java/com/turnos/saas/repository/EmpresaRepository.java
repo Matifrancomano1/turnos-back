@@ -4,6 +4,7 @@ import com.turnos.saas.model.entity.Empresa;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,4 +20,7 @@ public interface EmpresaRepository extends JpaRepository<Empresa, UUID> {
     boolean existsBySlugAndIdNot(String slug, UUID id);
 
     Optional<Empresa> findBySlugAndActivaTrue(String slug);
+
+    /** Lista todas las empresas (activas e inactivas) ordenadas por fecha de creación. Usado por SuperAdmin. */
+    List<Empresa> findAllByOrderByCreatedAtDesc();
 }

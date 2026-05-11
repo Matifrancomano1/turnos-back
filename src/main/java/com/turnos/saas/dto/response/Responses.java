@@ -294,4 +294,31 @@ public final class Responses {
             return new ErrorResponse(error, message, fields, Instant.now());
         }
     }
+
+    // ==============================
+    // SUPER ADMIN
+    // ==============================
+
+    public record SuperAdminEmpresaResponse(
+            UUID id,
+            String nombre,
+            String slug,
+            String emailContacto,
+            Boolean activa,
+            OffsetDateTime creadoEn,
+            long userCount
+    ) {}
+
+    public record SuperAdminStatsResponse(
+            long totalEmpresas,
+            long totalUsuarios,
+            long totalTurnos
+    ) {}
+
+    public record ImpersonationResponse(
+            String accessToken,
+            long expiresIn,
+            UUID empresaId
+    ) {}
 }
+

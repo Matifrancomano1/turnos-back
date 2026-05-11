@@ -91,4 +91,28 @@ public class JwtUtil {
     public long getAccessExpirationMs() {
         return accessExpirationMs;
     }
+
+    /**
+     * Genera un token de impersonación temporal (1 hora) con rol ADMIN para la empresa objetivo.
+     * El claim "impersonated" permite distinguir estas sesiones en logs/auditoría futura.
+     *
+     * @param adminUserId    ID del SuperAdmin que ejecuta la impersonación (subject del token)
+     * @param targetEmpresaId  ID de la empresa a impersonar
+     */
+    public String generateImpersonationToken(UUID adminUserId, UUID targetEmpresaId) {
+        final long ONE_HOUR_MS = 3_600_000L;
+        Date now = new Date();
+        Date expiry = new Date(now.getTime() + ONE_HOUR_MS);
+
+        return Jwts.builder()
+                .subject(adminUserId.toString())
+                .claim("empresaId", targetEmpresaId.toString())
+                .claim("rol", Rol.ADMIN.name())
+                .claim("type", "access")
+                .claim("impersonated", true)
+                .issuedAt(now)
+                .expiration(expiry)
+                .signWith(secretKey, Jwts.SIG.HS256)
+                .compact();
+    }
 }

@@ -23,4 +23,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
     Page<Usuario> findByEmpresaIdAndActivoTrue(UUID empresaId, Pageable pageable);
 
     Optional<Usuario> findByIdAndActivoTrue(UUID id);
+
+    /** Cuenta los usuarios activos e inactivos de una empresa. Usado por SuperAdmin. */
+    long countByEmpresaId(UUID empresaId);
 }

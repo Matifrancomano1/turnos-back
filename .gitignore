@@ -4,3 +4,5 @@ docker-compose.yml
 test-endpoints.postman_collection.json
 target
 .env
+.gitignore
+neondb_schema.sql

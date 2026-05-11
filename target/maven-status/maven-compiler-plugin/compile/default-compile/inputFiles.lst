@@ -9,6 +9,7 @@ C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\contro
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\controller\NotificacionController.java
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\controller\ReporteController.java
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\controller\ServicioController.java
+C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\controller\SuperAdminController.java
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\controller\TurnoController.java
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\controller\UsuarioController.java
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\dto\request\Requests.java
@@ -62,6 +63,7 @@ C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\servic
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\service\RefreshTokenService.java
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\service\ReporteService.java
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\service\ServicioService.java
+C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\service\SuperAdminService.java
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\service\TurnoService.java
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\service\UsuarioService.java
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\TurnosSaasApplication.java

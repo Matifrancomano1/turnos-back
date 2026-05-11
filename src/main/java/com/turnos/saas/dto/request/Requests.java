@@ -214,4 +214,33 @@ public final class Requests {
             @NotNull Boolean whatsappEnabled,
             @NotNull Boolean emailEnabled
     ) {}
+
+    // ==============================
+    // SUPER ADMIN
+    // ==============================
+
+    public record CreateTenantAdminRequest(
+            // Empresa
+            @NotBlank @Size(max = 150) @NoHtml String nombre,
+            @NotBlank @Email @Size(max = 150) String emailContacto,
+            @Size(max = 255) @NoHtml String direccion,
+            @Size(max = 30) String telefono,
+            @NotBlank
+            @Size(min = 3, max = 100, message = "El slug debe tener entre 3 y 100 caracteres")
+            @Pattern(
+                regexp = "^[a-z0-9-]+$",
+                message = "El slug solo puede contener letras minúsculas (a-z), números y guiones (-)"
+            )
+            String slug,
+            // Usuario admin inicial
+            @NotBlank @Size(min = 2, max = 100) @NoHtml String adminNombre,
+            @NotBlank @Email @Size(max = 150) String adminEmail,
+            @NotBlank
+            @Pattern(
+                regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&#])[A-Za-z\\d@$!%*?&#]{8,72}$",
+                message = "La contraseña debe contener mayúscula, minúscula, número y carácter especial (8-72 chars)"
+            )
+            String adminPassword,
+            @Size(max = 30) String adminTelefono
+    ) {}
 }
