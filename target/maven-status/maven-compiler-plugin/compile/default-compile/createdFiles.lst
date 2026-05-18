@@ -55,6 +55,7 @@ com\turnos\saas\service\SuperAdminService.class
 com\turnos\saas\dto\response\Responses$SeniaInfo.class
 com\turnos\saas\dto\response\Responses$ServicioInfo.class
 com\turnos\saas\repository\TurnoRepository.class
+com\turnos\saas\dto\response\Responses$SaasConfigResponse.class
 com\turnos\saas\dto\request\Requests$UpdateNotifConfigRequest.class
 com\turnos\saas\service\CotizacionService.class
 com\turnos\saas\dto\response\Responses$NotifConfigResponse.class
@@ -66,6 +67,7 @@ com\turnos\saas\dto\response\Responses$SuperAdminEmpresaResponse.class
 com\turnos\saas\dto\response\Responses$UsuarioResponse.class
 com\turnos\saas\dto\request\Requests$UpdateEmpresaRequest.class
 com\turnos\saas\model\entity\Turno$TurnoBuilder.class
+com\turnos\saas\repository\SaasConfigRepository.class
 com\turnos\saas\model\entity\Notificacion.class
 com\turnos\saas\model\entity\BloqueoAgenda$BloqueoAgendaBuilder.class
 com\turnos\saas\dto\response\Responses$ImpersonationResponse.class
@@ -102,6 +104,7 @@ com\turnos\saas\config\DataSeeder.class
 com\turnos\saas\dto\request\Requests$UpdateEmpresaConfigRequest.class
 com\turnos\saas\config\AsyncConfig.class
 com\turnos\saas\dto\request\Requests$CreateBloqueoRequest.class
+com\turnos\saas\model\entity\SaasConfig.class
 com\turnos\saas\dto\request\Requests$UpdateCotizacionRequest.class
 com\turnos\saas\model\entity\RefreshToken$RefreshTokenBuilder.class
 com\turnos\saas\controller\AuthController.class
@@ -129,6 +132,8 @@ com\turnos\saas\dto\request\Requests$RegistrarSeniaRequest.class
 com\turnos\saas\service\EmpresaService.class
 com\turnos\saas\config\SecurityConfig.class
 com\turnos\saas\dto\request\Requests$UpdatePerfilRequest.class
+com\turnos\saas\dto\request\Requests$UpdateSaasConfigRequest.class
+com\turnos\saas\model\entity\SaasConfig$SaasConfigBuilder.class
 com\turnos\saas\model\enums\TurnoEstado.class
 com\turnos\saas\dto\response\Responses$CotizacionInfo.class
 com\turnos\saas\mapper\EmpresaMapperImpl.class

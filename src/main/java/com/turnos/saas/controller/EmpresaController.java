@@ -4,6 +4,7 @@ import com.turnos.saas.dto.request.Requests.*;
 import com.turnos.saas.dto.response.Responses.*;
 import com.turnos.saas.security.TenantGuard;
 import com.turnos.saas.service.EmpresaService;
+import com.turnos.saas.service.SuperAdminService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -25,6 +26,7 @@ public class EmpresaController {
 
     private final EmpresaService empresaService;
     private final TenantGuard tenantGuard;
+    private final SuperAdminService superAdminService;
 
     // ==============================
     // ADMIN-ONLY: Gestión global
@@ -122,5 +124,22 @@ public class EmpresaController {
     @GetMapping("/slug/{slug}")
     public ResponseEntity<ApiResponse<EmpresaResponse>> obtenerPorSlug(@PathVariable String slug) {
         return ResponseEntity.ok(ApiResponse.ok(empresaService.obtenerPorSlug(slug)));
+    }
+
+    // ==============================
+    // SUPER ADMIN: Toggle status
+    // ==============================
+
+    /**
+     * PATCH /api/v1/empresas/{id}/status
+     * Invierte el estado activa/inactiva de la empresa.
+     * Solo accesible por SUPER_ADMIN.
+     */
+    @PatchMapping("/{id}/status")
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
+    public ResponseEntity<ApiResponse<SuperAdminEmpresaResponse>> toggleStatus(
+            @PathVariable UUID id) {
+        SuperAdminEmpresaResponse response = superAdminService.toggleStatus(id);
+        return ResponseEntity.ok(ApiResponse.ok("Estado de empresa actualizado", response));
     }
 }

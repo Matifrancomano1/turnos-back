@@ -1,6 +1,7 @@
 package com.turnos.saas.controller;
 
 import com.turnos.saas.dto.request.Requests.CreateTenantAdminRequest;
+import com.turnos.saas.dto.request.Requests.UpdateSaasConfigRequest;
 import com.turnos.saas.dto.response.Responses.*;
 import com.turnos.saas.service.SuperAdminService;
 import io.jsonwebtoken.Claims;
@@ -83,5 +84,30 @@ public class SuperAdminController {
         Claims claims = (Claims) authentication.getPrincipal();
         ImpersonationResponse response = superAdminService.impersonate(claims, empresaId);
         return ResponseEntity.ok(ApiResponse.ok("Token de impersonación generado", response));
+    }
+
+    // ==============================
+    // CONFIGURACIÓN GLOBAL
+    // ==============================
+
+    /**
+     * GET /api/v1/superadmin/config
+     * Obtiene la configuración global de la plataforma SaaS.
+     */
+    @GetMapping("/config")
+    public ResponseEntity<ApiResponse<SaasConfigResponse>> getConfig() {
+        SaasConfigResponse config = superAdminService.getSaasConfig();
+        return ResponseEntity.ok(ApiResponse.ok("Configuración obtenida", config));
+    }
+
+    /**
+     * PUT /api/v1/superadmin/config
+     * Actualiza la configuración global de la plataforma SaaS.
+     */
+    @PutMapping("/config")
+    public ResponseEntity<ApiResponse<SaasConfigResponse>> updateConfig(
+            @Valid @RequestBody UpdateSaasConfigRequest request) {
+        SaasConfigResponse config = superAdminService.updateSaasConfig(request);
+        return ResponseEntity.ok(ApiResponse.ok("Configuración actualizada exitosamente", config));
     }
 }

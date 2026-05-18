@@ -33,6 +33,7 @@ C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\model\
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\model\entity\NotifConfig.java
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\model\entity\Notificacion.java
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\model\entity\RefreshToken.java
+C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\model\entity\SaasConfig.java
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\model\entity\Senia.java
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\model\entity\Servicio.java
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\model\entity\Turno.java
@@ -47,6 +48,7 @@ C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\reposi
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\repository\NotifConfigRepository.java
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\repository\NotificacionRepository.java
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\repository\RefreshTokenRepository.java
+C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\repository\SaasConfigRepository.java
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\repository\SeniaRepository.java
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\repository\ServicioRepository.java
 C:\Users\Matif\OneDrive\Desktop\sist-turnos\src\main\java\com\turnos\saas\repository\TurnoHistorialRepository.java

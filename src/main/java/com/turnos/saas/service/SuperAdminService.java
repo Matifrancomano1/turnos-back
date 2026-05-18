@@ -1,16 +1,19 @@
 package com.turnos.saas.service;
 
 import com.turnos.saas.dto.request.Requests.CreateTenantAdminRequest;
+import com.turnos.saas.dto.request.Requests.UpdateSaasConfigRequest;
 import com.turnos.saas.dto.response.Responses.*;
 import com.turnos.saas.exception.BusinessRuleException;
 import com.turnos.saas.exception.ResourceNotFoundException;
 import com.turnos.saas.exception.SlugDuplicadoException;
 import com.turnos.saas.model.entity.Empresa;
 import com.turnos.saas.model.entity.NotifConfig;
+import com.turnos.saas.model.entity.SaasConfig;
 import com.turnos.saas.model.entity.Usuario;
 import com.turnos.saas.model.enums.Rol;
 import com.turnos.saas.repository.EmpresaRepository;
 import com.turnos.saas.repository.NotifConfigRepository;
+import com.turnos.saas.repository.SaasConfigRepository;
 import com.turnos.saas.repository.TurnoRepository;
 import com.turnos.saas.repository.UsuarioRepository;
 import com.turnos.saas.security.JwtUtil;
@@ -33,6 +36,7 @@ public class SuperAdminService {
     private final EmpresaRepository empresaRepository;
     private final UsuarioRepository usuarioRepository;
     private final NotifConfigRepository notifConfigRepository;
+    private final SaasConfigRepository saasConfigRepository;
     private final TurnoRepository turnoRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
@@ -161,5 +165,104 @@ public class SuperAdminService {
         log.warn("SuperAdmin impersonation: adminId={} → empresaId={}", adminUserId, empresaId);
 
         return new ImpersonationResponse(token, 3_600L, empresaId);
+    }
+
+    // ==============================
+    // TOGGLE STATUS
+    // ==============================
+
+    /**
+     * Invierte el estado activa/inactiva de una empresa.
+     * Si estaba activa → pasa a inactiva, y viceversa.
+     *
+     * @param empresaId  ID de la empresa a modificar
+     * @return La empresa con el nuevo estado serializada como SuperAdminEmpresaResponse
+     */
+    @Transactional
+    public SuperAdminEmpresaResponse toggleStatus(UUID empresaId) {
+        Empresa empresa = empresaRepository.findById(empresaId)
+                .orElseThrow(() -> new ResourceNotFoundException("Empresa", empresaId));
+
+        empresa.setActiva(!empresa.getActiva());
+        empresa = empresaRepository.save(empresa);
+
+        log.info("SuperAdmin toggleStatus: empresaId={}, nuevoEstado={}", empresaId, empresa.getActiva());
+
+        return new SuperAdminEmpresaResponse(
+                empresa.getId(),
+                empresa.getNombre(),
+                empresa.getSlug(),
+                empresa.getEmailContacto(),
+                empresa.getActiva(),
+                empresa.getCreatedAt(),
+                usuarioRepository.countByEmpresaId(empresa.getId())
+        );
+    }
+
+    // ==============================
+    // SAAS CONFIG
+    // ==============================
+
+    /**
+     * Obtiene la configuración global de la plataforma.
+     * Si no existe, crea y guarda una configuración por defecto.
+     */
+    @Transactional
+    public SaasConfigResponse getSaasConfig() {
+        SaasConfig config = saasConfigRepository.findById(1)
+                .orElseGet(() -> saasConfigRepository.save(SaasConfig.builder().id(1).build()));
+
+        return mapToSaasConfigResponse(config);
+    }
+
+    /**
+     * Actualiza la configuración global de la plataforma.
+     */
+    @Transactional
+    public SaasConfigResponse updateSaasConfig(UpdateSaasConfigRequest request) {
+        SaasConfig config = saasConfigRepository.findById(1)
+                .orElseGet(() -> SaasConfig.builder().id(1).build());
+
+        config.setPlatformName(request.platformName());
+        config.setBaseDomain(request.baseDomain());
+        config.setSupportEmail(request.supportEmail());
+        
+        config.setDefaultMaxUsers(request.defaultMaxUsers());
+        config.setDefaultMaxTurnosMensuales(request.defaultMaxTurnosMensuales());
+        
+        config.setAllowTrial(request.allowTrial());
+        config.setTrialDays(request.trialDays());
+        
+        config.setSmtpHost(request.smtpHost());
+        config.setSmtpPort(request.smtpPort());
+        config.setSmtpUser(request.smtpUser());
+        // Solo actualizar el password si se provee uno nuevo
+        if (request.smtpPass() != null && !request.smtpPass().isBlank()) {
+            config.setSmtpPass(request.smtpPass());
+        }
+        config.setSmtpFrom(request.smtpFrom());
+
+        config = saasConfigRepository.save(config);
+
+        log.info("SuperAdmin: Configuración global actualizada");
+
+        return mapToSaasConfigResponse(config);
+    }
+
+    private SaasConfigResponse mapToSaasConfigResponse(SaasConfig config) {
+        return new SaasConfigResponse(
+                config.getPlatformName(),
+                config.getBaseDomain(),
+                config.getSupportEmail(),
+                config.getDefaultMaxUsers(),
+                config.getDefaultMaxTurnosMensuales(),
+                config.getAllowTrial(),
+                config.getTrialDays(),
+                config.getSmtpHost(),
+                config.getSmtpPort(),
+                config.getSmtpUser(),
+                config.getSmtpFrom(),
+                config.getUpdatedAt()
+        );
     }
 }

@@ -267,6 +267,41 @@
 					"request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/empresas/{{empresa_id}}/reportes/export?desde=2024-01-01&hasta=2024-12-31", "host": ["{{baseUrl}}"], "path": ["empresas", "{{empresa_id}}", "reportes", "export"], "query": [{"key":"desde","value":"2024-01-01"},{"key":"hasta","value":"2024-12-31"}] } }
 				}
 			]
+		},
+		{
+			"name": "10. Super Admin",
+			"item": [
+				{
+					"name": "GET Estadísticas Globales",
+					"request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/superadmin/stats", "host": ["{{baseUrl}}"], "path": ["superadmin", "stats"] } }
+				},
+				{
+					"name": "GET Listar Empresas",
+					"request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/superadmin/empresas", "host": ["{{baseUrl}}"], "path": ["superadmin", "empresas"] } }
+				},
+				{
+					"name": "POST Crear Empresa y Admin",
+					"request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"empresaNombre\": \"Nueva Empresa SaaS\",\n  \"empresaSlug\": \"nueva-empresa\",\n  \"empresaEmail\": \"contacto@nueva.com\",\n  \"adminNombre\": \"Admin Nuevo\",\n  \"adminEmail\": \"admin@nueva.com\",\n  \"adminPassword\": \"Password123!\"\n}" }, "url": { "raw": "{{baseUrl}}/superadmin/empresas", "host": ["{{baseUrl}}"], "path": ["superadmin", "empresas"] } }
+				},
+				{
+					"name": "POST Impersonate Tenant",
+					"event": [
+						{
+							"listen": "test",
+							"script": { "exec": ["var j=pm.response.json();if(j.data&&j.data.token)pm.collectionVariables.set(\"token\",j.data.token);"], "type": "text/javascript" }
+						}
+					],
+					"request": { "method": "POST", "header": [], "url": { "raw": "{{baseUrl}}/superadmin/impersonate/{{empresa_id}}", "host": ["{{baseUrl}}"], "path": ["superadmin", "impersonate", "{{empresa_id}}"] } }
+				},
+				{
+					"name": "GET Configuración Global SaaS",
+					"request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/superadmin/config", "host": ["{{baseUrl}}"], "path": ["superadmin", "config"] } }
+				},
+				{
+					"name": "PUT Actualizar Config Global SaaS",
+					"request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"platformName\": \"SaaS Turnos v2\",\n  \"baseDomain\": \"turnos.com\",\n  \"supportEmail\": \"soporte@turnos.com\",\n  \"defaultMaxUsers\": 15,\n  \"defaultMaxTurnosMensuales\": 500,\n  \"allowTrial\": true,\n  \"trialDays\": 30,\n  \"smtpHost\": \"smtp.gmail.com\",\n  \"smtpPort\": 587,\n  \"smtpUser\": \"no-reply@turnos.com\",\n  \"smtpPass\": \"secret\",\n  \"smtpFrom\": \"SaaS Turnos\"\n}" }, "url": { "raw": "{{baseUrl}}/superadmin/config", "host": ["{{baseUrl}}"], "path": ["superadmin", "config"] } }
+				}
+			]
 		}
 	],
 	"auth": {

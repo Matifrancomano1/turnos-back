@@ -12,6 +12,7 @@ import com.turnos.saas.repository.UsuarioRepository;
 import com.turnos.saas.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,14 +54,14 @@ public class AuthService {
     @Transactional
     public AuthResponse login(LoginRequest request) {
         Usuario usuario = usuarioRepository.findByEmail(request.email())
-                .orElseThrow(() -> new BusinessRuleException("Credenciales inválidas"));
+                .orElseThrow(() -> new BadCredentialsException("Credenciales inválidas"));
 
         if (!Boolean.TRUE.equals(usuario.getActivo())) {
-            throw new BusinessRuleException("Tu cuenta se encuentra deshabilitada");
+            throw new BadCredentialsException("Tu cuenta se encuentra deshabilitada");
         }
 
         if (!passwordEncoder.matches(request.password(), usuario.getPasswordHash())) {
-            throw new BusinessRuleException("Credenciales inválidas");
+            throw new BadCredentialsException("Credenciales inválidas");
         }
 
         log.info("Login exitoso: userId={}", usuario.getId());

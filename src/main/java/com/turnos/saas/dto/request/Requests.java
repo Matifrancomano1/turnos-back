@@ -243,4 +243,23 @@ public final class Requests {
             String adminPassword,
             @Size(max = 30) String adminTelefono
     ) {}
+
+    public record UpdateSaasConfigRequest(
+            // Identidad
+            @NotBlank @Size(max = 150) @NoHtml String platformName,
+            @Size(max = 255) @NoHtml String baseDomain,
+            @Email @Size(max = 150) String supportEmail,
+            // Límites por tenant
+            @NotNull @Min(1) @Max(10000) Integer defaultMaxUsers,
+            @NotNull @Min(1) @Max(100000) Integer defaultMaxTurnosMensuales,
+            // Plan de prueba
+            @NotNull Boolean allowTrial,
+            @NotNull @Min(0) @Max(365) Integer trialDays,
+            // SMTP
+            @Size(max = 255) String smtpHost,
+            @Min(1) @Max(65535) Integer smtpPort,
+            @Size(max = 150) String smtpUser,
+            @Size(max = 255) String smtpPass,
+            @Email @Size(max = 150) String smtpFrom
+    ) {}
 }

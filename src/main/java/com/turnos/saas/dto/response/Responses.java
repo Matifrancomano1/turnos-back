@@ -305,7 +305,7 @@ public final class Responses {
             String slug,
             String emailContacto,
             Boolean activa,
-            OffsetDateTime creadoEn,
+            OffsetDateTime createdAt,
             long userCount
     ) {}
 
@@ -319,6 +319,26 @@ public final class Responses {
             String accessToken,
             long expiresIn,
             UUID empresaId
+    ) {}
+
+    public record SaasConfigResponse(
+            // Identidad
+            String platformName,
+            String baseDomain,
+            String supportEmail,
+            // Límites por tenant
+            Integer defaultMaxUsers,
+            Integer defaultMaxTurnosMensuales,
+            // Plan de prueba
+            Boolean allowTrial,
+            Integer trialDays,
+            // SMTP (contraseña nunca se expone al cliente)
+            String smtpHost,
+            Integer smtpPort,
+            String smtpUser,
+            String smtpFrom,
+            // Auditoría
+            OffsetDateTime updatedAt
     ) {}
 }
 

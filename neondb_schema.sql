@@ -1,6 +1,6 @@
 -- ============================================================
 --  SaaS Gestión de Turnos — Schema completo para NeonDB
---  Versión: 2.0  (V1 + V2 consolidados)
+--  Versión: 2.1  (V1 + V2 consolidados + módulo SuperAdmin)
 --
 --  Instrucciones:
 --    1. Abre el SQL Editor en tu proyecto de NeonDB.
@@ -24,6 +24,7 @@ DROP TABLE IF EXISTS turnos              CASCADE;
 DROP TABLE IF EXISTS servicios           CASCADE;
 DROP TABLE IF EXISTS refresh_tokens      CASCADE;
 DROP TABLE IF EXISTS usuarios            CASCADE;
+DROP TABLE IF EXISTS saas_config           CASCADE;
 DROP TABLE IF EXISTS empresas            CASCADE;
 
 DROP TYPE IF EXISTS cotizacion_estado;
@@ -44,7 +45,8 @@ CREATE EXTENSION IF NOT EXISTS "pgcrypto";   -- gen_random_uuid()
 CREATE TYPE rol_enum AS ENUM (
     'CLIENTE',
     'OPERADOR',
-    'ADMIN'
+    'ADMIN',
+    'SUPER_ADMIN'    -- acceso global a todos los tenants
 );
 
 CREATE TYPE turno_estado AS ENUM (
@@ -113,8 +115,9 @@ CREATE TRIGGER trg_empresas_updated_at
 
 -- ------------------------------------------------------------
 -- 4.2 usuarios
---   Soporta los roles CLIENTE, OPERADOR y ADMIN.
+--   Soporta los roles CLIENTE, OPERADOR, ADMIN y SUPER_ADMIN.
 --   Un ADMIN global tiene empresa_id = NULL.
+--   Un SUPER_ADMIN tiene empresa_id = NULL y acceso a todos los tenants.
 -- ------------------------------------------------------------
 CREATE TABLE usuarios (
     id             UUID         PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -299,6 +302,33 @@ CREATE TABLE notif_config (
 );
 
 
+-- ------------------------------------------------------------
+-- 4.12 saas_config
+--   Configuración global de la plataforma SaaS.
+--   Solo existirá un único registro (id = 1).
+-- ------------------------------------------------------------
+CREATE TABLE saas_config (
+    id                             INTEGER      PRIMARY KEY,
+    platform_name                  VARCHAR(150) NOT NULL DEFAULT 'SaaS Turnos',
+    base_domain                    VARCHAR(255),
+    support_email                  VARCHAR(150),
+    default_max_users              INTEGER      NOT NULL DEFAULT 10,
+    default_max_turnos_mensuales   INTEGER      NOT NULL DEFAULT 200,
+    allow_trial                    BOOLEAN      NOT NULL DEFAULT TRUE,
+    trial_days                     INTEGER      NOT NULL DEFAULT 14,
+    smtp_host                      VARCHAR(255),
+    smtp_port                      INTEGER      DEFAULT 587,
+    smtp_user                      VARCHAR(150),
+    smtp_pass                      VARCHAR(255),
+    smtp_from                      VARCHAR(150),
+    updated_at                     TIMESTAMPTZ  NOT NULL DEFAULT NOW()
+);
+
+CREATE TRIGGER trg_saas_config_updated_at
+    BEFORE UPDATE ON saas_config
+    FOR EACH ROW EXECUTE FUNCTION set_updated_at();
+
+
 -- ============================================================
 -- 5. ÍNDICES DE RENDIMIENTO
 -- ============================================================
@@ -343,14 +373,23 @@ CREATE INDEX idx_turno_historial_timestamp       ON turno_historial(turno_id, ti
 -- 6. DATOS SEMILLA (opcional — mismos del DataSeeder)
 --    Las contraseñas están hasheadas con BCrypt (cost=12).
 --
---    ADMIN:    admin@turnos.com    / Admin1234!
---    OPERADOR: operador@turnos.com / Operador1234!
+--    SUPER_ADMIN: superadmin@turnos.com / SuperAdmin1234!
+--    ADMIN:       admin@turnos.com      / Admin1234!
+--    OPERADOR:    operador@turnos.com   / Operador1234!
 --
 --    Genera nuevos hashes en: https://bcrypt-generator.com
+--
+--    IMPORTANTE: empresa_id = NULL para SUPER_ADMIN y ADMIN global.
 -- ============================================================
 
 INSERT INTO usuarios (id, nombre, email, password_hash, rol, activo)
 VALUES
+    (gen_random_uuid(),
+     'Super Administrador',
+     'superadmin@turnos.com',
+     '$2a$12$1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  -- reemplazar con hash real
+     'SUPER_ADMIN',
+     TRUE),
     (gen_random_uuid(),
      'Administrador Global',
      'admin@turnos.com',

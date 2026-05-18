@@ -18,6 +18,10 @@ public class DataSeeder implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
 
     // ── Credenciales por defecto ──────────────────────────────────────────────
+    private static final String SUPERADMIN_EMAIL    = "superadmin@turnos.com";
+    private static final String SUPERADMIN_NOMBRE   = "Super Administrador";
+    private static final String SUPERADMIN_PASSWORD = "SuperAdmin1234!";
+
     private static final String ADMIN_EMAIL    = "admin@turnos.com";
     private static final String ADMIN_NOMBRE   = "Administrador";
     private static final String ADMIN_PASSWORD = "Admin1234!";
@@ -29,43 +33,45 @@ public class DataSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        seedUsuario(ADMIN_EMAIL,    ADMIN_NOMBRE,    ADMIN_PASSWORD,    Rol.ADMIN);
-        seedUsuario(OPERADOR_EMAIL, OPERADOR_NOMBRE, OPERADOR_PASSWORD, Rol.OPERADOR);
-        printCredenciales();
+        if (usuarioRepository.count() == 0) {
+            log.info("[DataSeeder] Base de datos vacía. Iniciando carga de datos semilla...");
+            seedUsuario(SUPERADMIN_EMAIL, SUPERADMIN_NOMBRE, SUPERADMIN_PASSWORD, Rol.SUPER_ADMIN);
+            seedUsuario(ADMIN_EMAIL,      ADMIN_NOMBRE,      ADMIN_PASSWORD,      Rol.ADMIN);
+            seedUsuario(OPERADOR_EMAIL,   OPERADOR_NOMBRE,   OPERADOR_PASSWORD,   Rol.OPERADOR);
+            printCredenciales();
+        } else {
+            log.info("[DataSeeder] La base de datos ya contiene usuarios. Se omite la carga inicial.");
+        }
     }
 
     private void seedUsuario(String email, String nombre, String rawPassword, Rol rol) {
-        usuarioRepository.findByEmail(email).ifPresentOrElse(
-            u -> {
-                u.setPasswordHash(passwordEncoder.encode(rawPassword));
-                usuarioRepository.save(u);
-                log.debug("[DataSeeder] Usuario '{}' ya existe, contraseña actualizada al valor por defecto.", email);
-            },
-            () -> {
-                Usuario u = Usuario.builder()
-                        .nombre(nombre)
-                        .email(email)
-                        .passwordHash(passwordEncoder.encode(rawPassword))
-                        .rol(rol)
-                        .activo(true)
-                        .build();
-                usuarioRepository.save(u);
-                log.info("[DataSeeder] Usuario '{}' creado con rol {}.", email, rol);
-            }
-        );
+        if (usuarioRepository.existsByEmail(email)) {
+            log.debug("[DataSeeder] Usuario '{}' ya existe, saltando inserción para preservar contraseña actual.", email);
+        } else {
+            Usuario u = Usuario.builder()
+                    .nombre(nombre)
+                    .email(email)
+                    .passwordHash(passwordEncoder.encode(rawPassword))
+                    .rol(rol)
+                    .activo(true)
+                    .build();
+            usuarioRepository.save(u);
+            log.info("[DataSeeder] Usuario '{}' creado con rol {}.", email, rol);
+        }
     }
 
     private void printCredenciales() {
         String banner = """
 
-        ╔══════════════════════════════════════════════════════╗
-        ║          CREDENCIALES DE ACCESO INICIALES             ║
-        ╠══════════════════════════════════════════════════════╣
-        ║  ROL       │ EMAIL                  │ CONTRASEÑA      ║
-        ╠══════════════════════════════════════════════════════╣
-        ║  ADMIN     │ admin@turnos.com       │ Admin1234!      ║
-        ║  OPERADOR  │ operador@turnos.com    │ Operador1234!   ║
-        ╚══════════════════════════════════════════════════════╝
+        ╔══════════════════════════════════════════════════════════╗
+        ║           CREDENCIALES DE ACCESO INICIALES               ║
+        ╠══════════════════════════════════════════════════════════╣
+        ║  ROL        │ EMAIL                   │ CONTRASEÑA       ║
+        ╠══════════════════════════════════════════════════════════╣
+        ║  SUPERADMIN │ superadmin@turnos.com   │ SuperAdmin1234!  ║
+        ║  ADMIN      │ admin@turnos.com        │ Admin1234!       ║
+        ║  OPERADOR   │ operador@turnos.com     │ Operador1234!    ║
+        ╚══════════════════════════════════════════════════════════╝
         """;
         log.info(banner);
     }
